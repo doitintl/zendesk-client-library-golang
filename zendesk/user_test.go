@@ -163,14 +163,15 @@ func TestSearchUsersEx(t *testing.T) {
 	client, err := NewEnvClient()
 	require.NoError(t, err)
 
-	_, err = client.CreateUser(&User{
+	user, err := client.CreateUser(&User{
 		Name:  String(randString(16)),
 		Email: String(randString(16) + "@example.com"),
 		Tags:  []string{"premium_support"},
 	})
 	require.NoError(t, err)
+	defer client.DeleteUser(*user.ID)
 
 	found, err := client.SearchUsersEx("tags:premium_support", nil)
 	require.NoError(t, err)
-	require.Equal(t, 1, found.Count)
+	require.Equal(t, int64(1), *found.Count)
 }

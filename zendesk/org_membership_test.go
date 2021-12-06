@@ -14,49 +14,37 @@ func TestOrganizationMembershipCRUD(t *testing.T) {
 	client, err := NewEnvClient()
 	require.NoError(t, err)
 
-	org1 := randOrg(t, client)
-	defer client.DeleteOrganization(*org1.ID)
-
-	org2 := randOrg(t, client)
-	defer client.DeleteOrganization(*org2.ID)
+	org := randOrg(t, client)
+	defer client.DeleteOrganization(*org.ID)
 
 	user := randUser(t, client)
 	defer client.DeleteUser(*user.ID)
 
-	// it should create an organization membership
+	// it should create an organization membership (user can belong only to one org)
 	orgMembership1 := OrganizationMembership{
 		UserID:         user.ID,
-		OrganizationID: org1.ID,
+		OrganizationID: org.ID,
 	}
 
-	created1, err := client.CreateOrganizationMembership(&orgMembership1)
+	membership, err := client.CreateOrganizationMembership(&orgMembership1)
 	require.NoError(t, err)
-	require.NotNil(t, created1.ID)
-	require.Equal(t, *user.ID, *created1.UserID)
-	require.Equal(t, *org1.ID, *created1.OrganizationID)
-
-	orgMembership2 := OrganizationMembership{
-		UserID:         user.ID,
-		OrganizationID: org2.ID,
-	}
-	created2, err := client.CreateOrganizationMembership(&orgMembership2)
-	require.NoError(t, err)
+	require.NotNil(t, membership.ID)
+	require.Equal(t, *user.ID, *membership.UserID)
+	require.Equal(t, *org.ID, *membership.OrganizationID)
 
 	// it should return all organization memberships for specific user
 	found, err := client.ListOrganizationMembershipsByUserID(*user.ID)
 	require.NoError(t, err)
-	require.Len(t, found, 2)
-	found1 := isExistingMembership(*created1.UserID, *created1.OrganizationID, found)
+	require.Len(t, found, 1)
+	found1 := isExistingMembership(*membership.UserID, *membership.OrganizationID, found)
 	require.Equal(t, found1, true)
-	found2 := isExistingMembership(*created2.UserID, *created2.OrganizationID, found)
-	require.Equal(t, found2, true)
 
 	// it should delete an organization membership
-	err = client.DeleteOrganizationMembershipByID(*created1.ID)
+	err = client.DeleteOrganizationMembershipByID(*membership.ID)
 	require.NoError(t, err)
 	found, err = client.ListOrganizationMembershipsByUserID(*user.ID)
 	require.NoError(t, err)
-	require.Len(t, found, 1)
+	require.Len(t, found, 0)
 }
 
 func isExistingMembership(userId, orgId int64, memberships []OrganizationMembership) bool {
