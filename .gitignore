@@ -1,3 +1,21 @@
+# code coverage
+.cover
+
+# git repo
+.git
+
+# IDE customization
 .idea
+.vscode
+
+# binaries
+.bin
+
+# env customization
 .env
-vendor/*
+.in
+
+# temporary
+**/.DS_Store
+**/debug
+**/debug.test

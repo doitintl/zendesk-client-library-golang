@@ -1,13 +1,11 @@
-# Go-Zendesk
+# Zendesk
 
-[![CircleCI](https://circleci.com/gh/MEDIGO/go-zendesk.svg?style=shield)](https://circleci.com/gh/MEDIGO/go-zendesk)
-[![GoDoc](http://godoc.org/github.com/MEDIGO/go-zendesk/zendesk?status.png)](http://godoc.org/github.com/MEDIGO/go-zendesk/zendesk)
+[![build](https://github.com/doitintl/zendesk/workflows/build/badge.svg)](https://github.com/doitintl/zendesk/actions?query=workflow%3A"build") [![Go Report Card](https://goreportcard.com/badge/github.com/doitintl/zendesk)](https://goreportcard.com/report/github.com/doitintl/zendesk)
+[![GoDoc](http://godoc.org/github.com/doitintl/zendesk/zendesk?status.png)](http://godoc.org/github.com/doitintl/zendesk/zendesk)
 
-Go-Zendesk is a [Zendesk Core API](https://developer.zendesk.com/rest_api/docs/core/introduction) client library for Go.
+Zendesk is a [Zendesk Core API](https://developer.zendesk.com/rest_api/docs/core/introduction) client library (thin wrapper on top of Zendesk REST API) for Go.
 
-This library is used internally at MEDIGO and the API resources are being implemented as needed.
-
-**It's work in progress. Use with caution.**
+This library is used internally at DoiT International, forked initially from the [MEDIGO/go-zendesk](https://github.com/MEDIGO/go-zendesk) repository, and detached from it later on, since the original repository is abandoned and no longer maintained. DoiT will continue to maintain this repository, and will be using it for the next major release of the library.
 
 ## Usage
 
@@ -17,7 +15,7 @@ package main
 import (
   "log"
 
-  "github.com/MEDIGO/go-zendesk/zendesk"
+  "github.com/doitintl/zendesk/zendesk"
 )
 
 func main() {
@@ -33,7 +31,7 @@ func main() {
 }
 ```
 
-Find the complete API on https://godoc.org/github.com/MEDIGO/go-zendesk/zendesk#NewClient
+Find the complete API on https://godoc.org/github.com/doitintl/zendesk/zendesk#NewClient
 
 
 ## Development
@@ -64,7 +62,3 @@ $ make test
 
 Please note that integration tests will create and alter entities in the configured Zendesk instance.
 You most likely want to run them against a [Zendesk Sandbox](https://support.zendesk.com/hc/en-us/articles/203661826-Testing-changes-in-your-sandbox-Enterprise-) instance.
-
-## Copyright and license
-
-Copyright © 2017 MEDIGO GmbH. go-zendesk is licensed under the MIT License. See LICENSE for the full license text.

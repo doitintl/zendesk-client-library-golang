@@ -1,4 +1,4 @@
-package zendesk_test
+package zendesk
 
 import (
 	"log"
@@ -6,7 +6,6 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/MEDIGO/go-zendesk/zendesk"
 	"github.com/stretchr/testify/require"
 )
 
@@ -22,7 +21,7 @@ func TestClientHeaders(t *testing.T) {
 	require.NotNil(t, server)
 	defer server.Close()
 
-	client1, err := zendesk.NewURLClient(server.URL, "", "")
+	client1, err := NewURLClient(server.URL, "", "")
 	require.NoError(t, err)
 
 	client2 := client1.WithHeader("foo", "bar")
@@ -36,7 +35,7 @@ func TestClientHeaders(t *testing.T) {
 }
 
 func Example() {
-	client, err := zendesk.NewClient("domain", "username", "password")
+	client, err := NewClient("domain", "username", "password")
 	if err != nil {
 		log.Fatal(err)
 	}
