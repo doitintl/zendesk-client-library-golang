@@ -319,17 +319,17 @@ type TicketSearchResults struct {
 
 // UserSearchResults represents returned results from the unified search api for type:user
 type UserSearchResults struct {
-	Results      []User `json:"results"`
-	NextPage     *string  `json:"next_page"`
-	PreviousPage *string  `json:"previous_page"`
-	Count        *int64   `json:"count"`
+	Results      []User  `json:"results"`
+	NextPage     *string `json:"next_page"`
+	PreviousPage *string `json:"previous_page"`
+	Count        *int64  `json:"count"`
 }
 
 // APIError represents an error response returnted by the API.
 type APIError struct {
 	Response *http.Response
 
-	Type        *string                       `json:"error,omitmepty"`
+	Type        *string                       `json:"error,omitempty"`
 	Description *string                       `json:"description,omitempty"`
 	Details     *map[string][]*APIErrorDetail `json:"details,omitempty"`
 }

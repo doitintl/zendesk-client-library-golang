@@ -28,7 +28,7 @@ func (c *client) CreateGroup(group *Group) (*Group, error) {
 // ListGroups lists all groups.
 func (c *client) ListGroups() ([]Group, error) {
 	out := new(APIPayload)
-	err := c.get(fmt.Sprintf("/api/v2/groups.json"), out)
+	err := c.get("/api/v2/groups.json", out)
 
 	return out.Groups, err
 }
