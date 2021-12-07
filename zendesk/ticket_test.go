@@ -1,9 +1,8 @@
 package zendesk
 
 import (
-	"testing"
-
 	"github.com/stretchr/testify/require"
+	"testing"
 )
 
 func TestTicketCRUD(t *testing.T) {
@@ -131,6 +130,52 @@ func TestBatchUpdateManyTickets(t *testing.T) {
 
 	err = client.BatchUpdateManyTickets(updates)
 	require.NoError(t, err)
+}
+
+func TestSafeUpdateTicket(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skipping integration test in short mode.")
+	}
+
+	client, err := NewEnvClient()
+	require.NoError(t, err)
+
+	user := randUser(t, client)
+	defer client.DeleteUser(*user.ID)
+
+	ticket := &Ticket{
+		Subject:     String("My printer is on fire!"),
+		Description: String("The smoke is very colorful."),
+		RequesterID: user.ID,
+	}
+
+	created, err := client.CreateTicket(ticket)
+	require.NoError(t, err)
+	require.NotNil(t, created.ID)
+	defer client.DeleteTicket(*created.ID)
+
+	fetched, err := client.ShowTicket(*created.ID)
+	require.NoError(t, err)
+
+	// update initial ticket
+	ticket.ID = created.ID
+	ticket.Comment = &TicketComment{
+		Body:   String("No, the smoke is back"),
+		Public: Bool(true),
+	}
+	created, err = client.UpdateTicket(*created.ID, ticket)
+	require.NoError(t, err)
+
+	// try to safe-update the same ticket
+	fetched.Comment = &TicketComment{
+		Body:   String("No, the smoke is white"),
+		Public: Bool(true),
+	}
+	fetched.SafeUpdate = Bool(true)
+	fetched.UpdatedStamp = fetched.UpdatedAt
+	fetched, err = client.UpdateTicket(*fetched.ID, fetched)
+	require.Error(t, err)
+	require.Equal(t, String("UpdateConflict"), err.(*APIError).Type)
 }
 
 func TestBulkUpdateManyTickets(t *testing.T) {
