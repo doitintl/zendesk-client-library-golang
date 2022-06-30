@@ -45,6 +45,7 @@ type Client interface {
 	ListOrganizationTickets(int64, *ListOptions, ...SideLoad) (*ListResponse, error)
 	ListExternalIDTickets(string, *ListOptions, ...SideLoad) (*ListResponse, error)
 	ListRequestedTickets(int64) ([]Ticket, error)
+	ListViewTickets(string) ([]Ticket, error)
 	ListTickets(*ListOptions, ...SideLoad) (*ListResponse, error)
 	ListTicketAudits(int64, *ListOptions) (*ListResponse, error)
 	ListTicketComments(int64) ([]TicketComment, error)

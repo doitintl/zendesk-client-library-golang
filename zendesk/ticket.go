@@ -184,6 +184,15 @@ func (c *client) ListRequestedTickets(userID int64) ([]Ticket, error) {
 	return out.Tickets, err
 }
 
+// ListViewTickets lists tickets from a view
+//
+// Zendesk Core API docs: https://developer.zendesk.com/api-reference/ticketing/business-rules/views/#list-tickets-from-a-view
+func (c *client) ListViewTickets(viewID string) ([]Ticket, error) {
+	out := new(APIPayload)
+	err := c.get(fmt.Sprintf("/api/v2/views/%s/tickets.json", viewID), out)
+	return out.Tickets, err
+}
+
 // ListTicketCollaborators lists collaborators by ticket id
 //
 // Zendesk Core API docs: https://developer.zendesk.com/rest_api/docs/support/tickets#list-collaborators-for-a-ticket
