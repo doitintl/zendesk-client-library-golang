@@ -295,6 +295,7 @@ type APIPayload struct {
 	OrganizationMembership     *OrganizationMembership    `json:"organization_membership,omitempty"`
 	OrganizationMemberships    []OrganizationMembership   `json:"organization_memberships,omitempty"`
 	Organizations              []Organization             `json:"organizations,omitempty"`
+	Rows                       []ViewRow                  `json:"rows,omitempty"`
 	Tags                       []string                   `json:"tags,omitempty"`
 	Ticket                     *Ticket                    `json:"ticket,omitempty"`
 	TicketField                *TicketField               `json:"ticket_field,omitempty"`
